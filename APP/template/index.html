@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UK House Price Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            width: 380px;
+        }
+        h1 {
+            font-size: 22px;
+            color: #1f3864;
+            margin-bottom: 24px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-top: 16px;
+            margin-bottom: 4px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 10px;
+            background: #1f3864;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #16294d;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>UK House Price Predictor</h1>
+        <form action="/predict" method="POST">
+            <label for="region">Region</label>
+            <select name="region" id="region" required>
+                {% for r in regions %}
+                <option value="{{ r }}">{{ r }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="category">Property / Category</label>
+            <select name="category" id="category" required>
+                {% for c in categories %}
+                <option value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="year">Year</label>
+            <input type="number" name="year" id="year" min="1995" max="2030" value="2026" required>
+
+            <label for="month">Month</label>
+            <input type="number" name="month" id="month" min="1" max="12" value="6" required>
+
+            <button type="submit">Predict Price</button>
+        </form>
+    </div>
+</body>
+</html>

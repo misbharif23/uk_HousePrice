@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            width: 640px;
+        }
+        h1 {
+            font-size: 20px;
+            color: #1f3864;
+            margin: 0;
+        }
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1f3864;
+            margin: 12px 0 4px 0;
+        }
+        .meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        a {
+            color: #1f3864;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Predicted Average Price</h1>
+        <div class="price">£{{ "{:,.0f}".format(predicted_price) }}</div>
+        <div class="meta">{{ region }} — {{ category }} — {{ month }}/{{ year }}</div>
+
+        <canvas id="trendChart" height="220"></canvas>
+
+        <p style="margin-top:24px;"><a href="/">&larr; Try another prediction</a></p>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('trendChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_labels | tojson }},
+                datasets: [{
+                    label: 'Historical Average Price (£)',
+                    data: {{ chart_values | tojson }},
+                    borderColor: '#1f3864',
+                    backgroundColor: 'rgba(31,56,100,0.08)',
+                    fill: true,
+                    tension: 0.2,
+                    pointRadius: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { maxTicksLimit: 10 } },
+                    y: { ticks: { callback: (v) => '£' + v.toLocaleString() } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
